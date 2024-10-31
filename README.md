@@ -44,8 +44,8 @@ data_root_dir/
 │   └── ...
 └── ...
 ```
-The segment_feature must have the vector shape [1, embedding_dim]. 
-The embedding_dim can be changed by the feature extractor that you use. 
+The `segment_feature` must have the vector shape [1, `embedding_dim`]. 
+The `embedding_dim` can be changed by the feature extractor that you use. 
 Then, you can simply adjust the following parameter.
 ```python
 #parameters.py
