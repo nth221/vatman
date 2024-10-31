@@ -10,15 +10,42 @@ This repository contains our implementation of **"VATMAN: Video Anomaly Transfor
 
 ## Experimental Setup
 
-We provide the network architecture of the proposed TransPAD model and share the pipeline code that enables users to train and test the network on the given dataset. 
-The Transformer code used in TransPAD references the implementation provided by [lucidrains's repository](https://github.com/lucidrains/vit-pytorch). 
-All experiments were conducted in an environment with `Python 3.8.12`, `PyTorch 1.12.1`, and `CUDA Toolkit 11.3.1`.
+We provide the network architecture of the proposed VATMAN model and share the pipeline code that enables users to train and test the network on the video feature dataset. 
+The Transformer part used in asymmetric Autoencoder references the implementation provided by [lucidrains's repository](https://github.com/lucidrains/vit-pytorch). 
+All experiments were conducted in an environment with `Python 3.8.12`, `PyTorch 1.12.1`, and `CUDA Toolkit 12.3`.
 
 ### Dataset and Hyperparameter Configuration
 
-The parameters that users can modify, such as the paths to the training datasets and the hyperparameters, are primarily defined in `parameters.py`
+The parameters that users can modify, such as the paths to the training datasets and the hyperparameters, are primarily defined in `parameters.py`.
 
 - **Dataset Configuration**
+
+To locate the path of the dataset, you need to edit the following parameters in `parameters.py`.
+They are only used to access the dataset and name the result file.
+```python
+#parameters.py
+data_root_dir = '[ROOT PATH OF THE DATASETS]'
+
+feature_extractor = '[THE NAME OF THE FEATURE EXTRACTOR USED TO EXTRACT FEATURE FROM VIDEO SEGMENT]'
+
+anomaly_class = '[ANOMALY CLASS OF THE DATASET]'
+```
+
+The directory structure of the folder containing the daaset is as follows:
+```plaintext
+data_root_dir/
+├── feature_extractor_1/
+│   ├── anomaly_class_1/
+│   │   ├── video1/
+│   │   │   ├── segment_feature1.npy
+│   │   │   ├── segment_feature2.npy
+│   │   │   └── ...
+│   │   └── ...
+│   └── ...
+└── ...
+```
+
+To 
 
 As an example, we share the Lung dataset [^4] used in the experiments described in the paper (datasets/lung-1vs5.csv). 
 All datasets used in the experiments must be min-max normalized per feature, with the last feature serving as a binary label distinguishing between normal and abnormal cases. 
