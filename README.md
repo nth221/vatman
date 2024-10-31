@@ -44,72 +44,41 @@ data_root_dir/
 │   └── ...
 └── ...
 ```
-
-To 
-
-As an example, we share the Lung dataset [^4] used in the experiments described in the paper (datasets/lung-1vs5.csv). 
-All datasets used in the experiments must be min-max normalized per feature, with the last feature serving as a binary label distinguishing between normal and abnormal cases. 
-The path to the dataset, saved as a `.csv` file, can be specified as follows:
-
+The segment_feature must have the vector shape [1, embedding_dim]. 
+The embedding_dim can be changed by the feature extractor that you use. 
+Then, you can simply adjust the following parameter.
 ```python
-# parameters.py
-dataset_root = '[PATH OF dataset.csv FILE]'
+#parameters.py
+
+embedding_dim = '[THE DIMENSION OF SEGMENT_FEATURE]'
 ```
 
-- **Hyperparameter Configuration**
-
-The default hyperparameters for the model have been optimized based on the experiments conducted with the Lung dataset as described in the paper. 
-These hyperparameters can also be adjusted in `parameters.py` as shown below:
-
-```python
-# parameters.py
-hp = {
-    'batch_size' : [BATCH SIZE],
-    'lr' : [LEARNING RATE],
-    'sequence_len' : [SEQUENCE LENGTH],
-    'heads' : [NUMBER OF HEADS],
-    'dim' : [ENCODER'S INPUT DIMENSION],
-    'num_layers' : [NUMBER OF LAYERS],
-    'layer_conf' : [LAYER CONFIGURATION: {'same', 'smaller', 'hybrid'} OPTIONS ARE AVAILABLE] 
-}
-```
+The remaining parameters in `parameters.py` are static hyperparameters optimized in our dataset.
+Therefore, you can adjust them for your experiments.
+The batch size and learning rate are automatically tuned equally for all models used in the experiments, utilizing the hyperparameter tuning tool, Optuna ([link](https://optuna.org/)).
 
 - **Setting the Experimental Results Path**
 
 After configuring the dataset and hyperparameters, you will need to set the path for saving the experimental results. 
-This can also be done in `parameters.py` using the variables `results_path` and `exp_name`. 
+This can also be done in `parameters.py` using the variables `save_root_dir` and `exp_name`. 
 `results_path` specifies the default directory where the experimental results will be saved, and `exp_name` defines the name of the current experiment.
-
-For example, with the following configuration:
-```python
-# parameters.py
-results_path = './results'
-
-exp_name = 'test'
-```
-The best-performing model trained during the experiment will be saved as `results/test/best_auroc_model.pt`.
 
 - **Run the Experiment**
   
 If you have completely finished setting up `parameters.py`, you can start the experiment by running the following command:
-```
-python main.py
+```python
+python train.py
 ```
 
 ### Citation
 If you utilize this code, please cite the following paper and star this repository:
 ```bibtex
-@inproceedings{kim2024transpad,
-  title={Transformer for Point Anomaly Detection},
+@inproceedings{kim2024vatman,
+  title={VATMAN: Video Anomaly Transformer for Monitoring Accidents and Nefariousness},
   author={Kim, Harim and Lee, Chang Ha and Hong, Charmgil},
-  booktitle={Proceedings of the 33rd ACM International Conference on Information and Knowledge Management},
+  booktitle={2024 IEEE International Conference on Advanced Video and Signal Based Surveillance (AVSS)},
+  pages={1--7},
   year={2024},
+  organization={IEEE}
 }
 ```
-
-### References
-
-[^1]: Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N Gomez, Łukasz Kaiser, and Illia Polosukhin. 2017. Attention is all you need. Advances in neural information processing systems, 30.
-[^2]: Hu Wang, Guansong Pang, Chunhua Shen, and Congbo Ma. 2019. Unsupervised representation learning by predicting random distances. arXiv preprint arXiv:1912.12186.
-[^3]: Leland McInnes, John Healy, and James Melville. 1802. Umap: uniform manifold approximation and projection for dimension reduction. arxiv 2018. arXiv preprint arXiv:1802.03426.
-[^4]: Z.Q. Hong and J.Y. Yang. 1992. Lung cancer. UCI Machine Learning Repository. DOI: https://doi.org/10.24432/C57596. (1992).
